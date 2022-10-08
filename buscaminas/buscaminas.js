@@ -37,40 +37,32 @@ let posColumna;
 
 
 while (contadorMinas < numMinas) {
-    posFila = Math.floor(Math.random() * maxFilas);
-    posColumna = Math.floor(Math.random() * maxColumnas);
+    posFila = Math.floor(Math.random()*maxFilas);
+    posColumna = Math.floor(Math.random()*maxColumnas);
 
     if (arrayTablero[posFila][posColumna] != 'MINA') {
         arrayTablero[posFila][posColumna] = 'MINA';
-        contadorMinas++;
+        contadorMinas++ ;
     };
-};
+  };
 
-let fila = 2;
-let columna = 1;
+
 let numMinasAlrededor = 0;
+let columna=0;
 
 for (let fila = 0; fila < maxFilas; fila++) {
-    for (let columna = 0; columna < maxColumnas; columna++) {
-        if (arrayTablero[fila][columna] != "MINA") {
-            for (let cFila = fila - 1; cFila <= fila + 1; cFila++) {
-                for (let cColumna = columna - 1; cColumna < columna + 1; cColumna++) {
-                    if (cFila >= 0 || cColumna >= 0 || cFila < maxFilas || cColumna < maxColumnas) {
-                        if (arrayTablero[cFila][cColumna] == 'MINA') {
-                            numMinasAlrededor++;
-                        }
-                    }
+    for (let cFila = fila - 1; cFila < fila + 1; cFila++) {
+        for (let cColumna = columna - 1; cColumna < columna + 1; cColumna++) {
+            if (cFila > 0 && cFila < maxFilas && cColumna > 0 && cColumna < maxColumnas) {
+                console.log(arrayTablero[cFila][cColumna]);
+                if (arrayTablero[cFila][cColumna] == 'MINA') {
+                    numMinasAlrededor++;
                 }
-                arrayTablero[fila][columna] = numMinasAlrededor;
-
-                console.log(arrayTablero);
-            }
+            } 
         }
-
     }
+    arrayTablero[fila][columna] = numMinasAlrededor;
 }
 
-
-arrayTablero[fila][columna] = numMinasAlrededor;
 
 console.log(arrayTablero);
