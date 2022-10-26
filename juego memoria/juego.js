@@ -21,3 +21,19 @@ function crearTablero(fila, columna) {
         }
     }
 };
+function dibujarTablero(fila, columna, tablero) {
+    document.write('<h2>MEMORIN</h2>')
+    document.write('<h3>Nerea Oliva Prieto</h3>')
+    document.write('<table>');
+
+    for (let i = 0; i < filas; i++) {
+        document.write('<tr>');
+
+        for (let j = 0; j < columnas; j++) {
+            document.write('<td>' + arrayTablero[i][j] + '</td>');
+        }
+
+        document.write('</tr>');
+    }
+    document.write('</table>');
+};
