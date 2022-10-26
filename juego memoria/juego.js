@@ -12,3 +12,12 @@ function preguntaUsuario(fila, columna, tablero, casilla) {
     arrayTablero = [];
     casillas = filas * columnas;
 };
+function crearTablero(fila, columna) {
+    for (let fila = 0; fila < filas; fila++) {
+        arrayTablero[fila] = new Array(columnas);
+
+        for (let columna = 0; columna < columnas; columna++) {
+            arrayTablero[fila][columna] = '';
+        }
+    }
+};
