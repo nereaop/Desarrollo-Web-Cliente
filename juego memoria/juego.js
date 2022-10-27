@@ -9,6 +9,7 @@ function preguntaUsuario(fila, columna, tablero, casilla) {
     filas = prompt('¿Cuantas filas quieres?');
     columnas = prompt('¿Cuantas columnas quieres?');
 
+
     arrayTablero = [];
     casillas = filas * columnas;
 };
@@ -37,3 +38,46 @@ function dibujarTablero(fila, columna, tablero) {
     }
     document.write('</table>');
 };
+function colocarEmojis(arrayTablero, filas, columnas, emoticonos) {
+
+    let posicionArray = 0;
+    let contadorEmojis = 0;
+    let posFila;
+    let posColumna;
+
+    while (contadorEmojis != (casillas/2)) {
+        posFila = Math.floor(Math.random() * filas);
+        posColumna = Math.floor(Math.random() * columnas);
+        while (arrayTablero[posFila][posColumna] != '') {
+            posFila = Math.floor(Math.random() * filas);
+            posColumna = Math.floor(Math.random() * columnas);
+        }
+        arrayTablero[posFila][posColumna] = emoticonos[posicionArray];
+        posFila = Math.floor(Math.random() * filas);
+        posColumna = Math.floor(Math.random() * columnas);
+        while (arrayTablero[posFila][posColumna] != '') {
+            posFila = Math.floor(Math.random() * filas);
+            posColumna = Math.floor(Math.random() * columnas);
+        }
+        arrayTablero[posFila][posColumna] = emoticonos[posicionArray];
+        posicionArray++;
+        contadorEmojis++;
+        if(posicionArray == 10){
+            posicionArray = 0;
+        }
+    }
+};
+preguntaUsuario(filas, columnas, arrayTablero, casillas);
+if (casillas % 2 == 0) {
+    crearTablero(filas, columnas);
+}
+while (casillas % 2 == 1) {
+    window.alert("Ha ocurrido un error, has introducido numeros cuya multiplicacion es impar. Por favor, introduce filas y columnas cuya multiplicacion sea par");
+    preguntaUsuario(filas, columnas, arrayTablero, casillas);
+    if (casillas % 2 == 0) {
+        crearTablero(filas, columnas);
+    }
+};
+colocarEmojis(arrayTablero, filas, columnas, emoticonos);
+dibujarTablero(filas, columnas, arrayTablero);
+
