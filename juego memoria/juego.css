@@ -1,5 +1,5 @@
 table , td, th {
-	border: 1px solid black;
+	border: 2px solid black;
 	border-collapse: collapse;
 	margin: auto;
 }
@@ -26,5 +26,6 @@ body{
 	background-color: rgb(191, 246, 246);
 }
 p{
-	font-size: 26px;
+	font-size: 28px;
+	text-shadow: 2px 2px black;
 }
