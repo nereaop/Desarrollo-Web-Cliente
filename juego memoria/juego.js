@@ -1,83 +1,112 @@
-let filas;
-let columnas;
-let arrayTablero;
-let casillas;
-
-let emoticonos = ["<p>&#128512;</p>", "<p>&#128520;</p>", "<p>&#128564;</p>", "<p>&#128536;</p>", "<p>&#128526;</p>", "<p>&#128518;</p>", "<p>&#128519;</p>", "<p>&#128521;</p>", "<p>&#128525;</p>", "<p>&#128514;</p>"];
-
-function preguntaUsuario(fila, columna, tablero, casilla) {
-    filas = prompt('¿Cuantas filas quieres?');
-    columnas = prompt('¿Cuantas columnas quieres?');
+class Tablero {
+    constructor(filas, columnas) {
+        this.filas = filas;
+        this.columnas = columnas;
+        this.casillas = this.filas * this.columnas;
+        this.emoticonos = ["<p>&#128512;</p>", "<p>&#128055;</p>", "<p>&#128047;</p>", "<p>&#128536;</p>", "<p>&#128526;</p>", "<p>&#128518;</p>", "<p>&#128519;</p>", "<p>&#128521;</p>", "<p>&#128525;</p>", "<p>&#128514;</p>"];
 
 
-    arrayTablero = [];
-    casillas = filas * columnas;
-};
-function crearTablero(fila, columna) {
-    for (let fila = 0; fila < filas; fila++) {
-        arrayTablero[fila] = new Array(columnas);
+        this.crearTablero();
+        this.colocarEmojis();
+        this.dibujarTablero();
+    }
+    crearTablero() {
 
-        for (let columna = 0; columna < columnas; columna++) {
-            arrayTablero[fila][columna] = '';
+        this.arrayTablero = [];
+
+        for (let fila = 0; fila < this.filas; fila++) {
+            this.arrayTablero[fila] = new Array(this.columnas);
+
+            for (let columna = 0; columna < this.columnas; columna++) {
+                this.arrayTablero[fila][columna] = '';
+            }
         }
     }
-};
-function dibujarTablero(fila, columna, tablero) {
-    document.write('<h2>MEMORIN</h2>')
-    document.write('<h3>Nerea Oliva Prieto</h3>')
-    document.write('<table>');
 
-    for (let i = 0; i < filas; i++) {
-        document.write('<tr>');
+    dibujarTablero() {
+        document.write('<h2>MEMORIN</h2>')
+        document.write('<h3>Nerea Oliva Prieto</h3>')
+        document.write('<table>');
 
-        for (let j = 0; j < columnas; j++) {
-            document.write('<td>' + arrayTablero[i][j] + '</td>');
+        for (let i = 0; i < this.filas; i++) {
+            document.write('<tr>');
+
+            for (let j = 0; j < this.columnas; j++) {
+                document.write('<td>' + this.arrayTablero[i][j] + '</td>');
+            }
+
+            document.write('</tr>');
         }
-
-        document.write('</tr>');
+        document.write('</table>');
     }
-    document.write('</table>');
-};
-function colocarEmojis(arrayTablero, filas, columnas, emoticonos) {
+    colocarEmojis() {
 
-    let posicionArray = 0;
-    let contadorEmojis = 0;
-    let posFila;
-    let posColumna;
+        let posArray = 0;
+        let contadorEmojis = 0;
+        let posFila;
+        let posColumna;
 
-    while (contadorEmojis != (casillas/2)) {
-        posFila = Math.floor(Math.random() * filas);
-        posColumna = Math.floor(Math.random() * columnas);
-        while (arrayTablero[posFila][posColumna] != '') {
-            posFila = Math.floor(Math.random() * filas);
-            posColumna = Math.floor(Math.random() * columnas);
-        }
-        arrayTablero[posFila][posColumna] = emoticonos[posicionArray];
-        posFila = Math.floor(Math.random() * filas);
-        posColumna = Math.floor(Math.random() * columnas);
-        while (arrayTablero[posFila][posColumna] != '') {
-            posFila = Math.floor(Math.random() * filas);
-            posColumna = Math.floor(Math.random() * columnas);
-        }
-        arrayTablero[posFila][posColumna] = emoticonos[posicionArray];
-        posicionArray++;
-        contadorEmojis++;
-        if(posicionArray == 10){
-            posicionArray = 0;
+        while (contadorEmojis != (this.casillas / 2)) {
+            posFila = Math.floor(Math.random() * this.filas);
+            posColumna = Math.floor(Math.random() * this.columnas);
+            while (this.arrayTablero[posFila][posColumna] != '') {
+                posFila = Math.floor(Math.random() * this.filas);
+                posColumna = Math.floor(Math.random() * this.columnas);
+            }
+            this.arrayTablero[posFila][posColumna] = this.emoticonos[posArray];
+            posFila = Math.floor(Math.random() * this.filas);
+            posColumna = Math.floor(Math.random() * this.columnas);
+            while (this.arrayTablero[posFila][posColumna] != '') {
+                posFila = Math.floor(Math.random() * this.filas);
+                posColumna = Math.floor(Math.random() * this.columnas);
+            }
+            this.arrayTablero[posFila][posColumna] = this.emoticonos[posArray];
+            posArray++;
+            contadorEmojis++;
+            if (posArray == 10) {
+                posArray = 0;
+            }
         }
     }
-};
-preguntaUsuario(filas, columnas, arrayTablero, casillas);
-if (casillas % 2 == 0) {
-    crearTablero(filas, columnas);
 }
-while (casillas % 2 == 1) {
-    window.alert("Ha ocurrido un error, has introducido numeros cuya multiplicacion es impar. Por favor, introduce filas y columnas cuya multiplicacion sea par");
-    preguntaUsuario(filas, columnas, arrayTablero, casillas);
-    if (casillas % 2 == 0) {
-        crearTablero(filas, columnas);
-    }
-};
-colocarEmojis(arrayTablero, filas, columnas, emoticonos);
-dibujarTablero(filas, columnas, arrayTablero);
 
+class Memorin {
+    constructor() {
+        this.preguntaUsuario();
+        this.casillas = this.filas * this.columnas;
+        this.comprobacionCasillas();
+    }
+    preguntaUsuario() {
+        this.filas = prompt('¿Cuantas filas quieres?');
+        this.columnas = prompt('¿Cuantas columnas quieres?');
+    }
+
+    comprobacionCasillas() {
+        
+        if (this.casillas % 2 == 0) {
+            this.crearTableroJuego();
+        }
+        
+        if (this.casillas % 2 != 0) {
+            let par = false;
+            while (par == false) {
+                window.alert("Ha ocurrido un error, has introducido numeros los cuales las casillas son impar. Por favor, introduce filas y columnas cuyas casillas sean par");
+                this.preguntaUsuario();
+                this.casillas = 0;
+                if (this.casillas % 2 == 0) {
+                    this.crearTableroJuego();
+                    par = true;
+                }
+            }
+
+        }
+    }
+
+    crearTableroJuego() {
+        this.tablero = new Tablero(this.filas, this.columnas);
+    }
+
+
+}
+
+let memorin = new Memorin();
