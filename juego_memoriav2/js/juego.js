@@ -8,7 +8,7 @@ class Tablero {
 
         this.crearTablero();
         this.colocarEmojis();
-        this.dibujarTablero();
+        this.dibujarTableroDOM();
     }
     crearTablero() {
 
@@ -23,22 +23,34 @@ class Tablero {
         }
     }
 
-    dibujarTablero() {
+    dibujarTableroDOM() {
         document.write('<h2>MEMORIN</h2>')
         document.write('<h3>Nerea Oliva Prieto</h3>')
         document.write('<table>');
 
+        let tabla = document.createElement('table');
+        let fila;
+        let columna;
+
         for (let i = 0; i < this.filas; i++) {
-            document.write('<tr>');
+            fila = document.createElement('tr');
+            tabla.appendChild(fila);
 
             for (let j = 0; j < this.columnas; j++) {
-                document.write('<td>' + this.arrayTablero[i][j] + '</td>');
+                columna = document.createElement('td');
+                columna.id = `f${i}_c${j}`;
+                columna.dataset.fila = i;
+                columna.dataset.columna = j;
+                columna.dataset.despejado = false;
+                fila.appendChild(columna);
             }
-
-            document.write('</tr>');
         }
-        document.write('</table>');
+
+        document.body.appendChild(tabla);
+        
     }
+  
+
     colocarEmojis() {
 
         let posArray = 0;
@@ -101,7 +113,19 @@ class Memorin {
 
         }
     }
+    dibujarTableroDOM() {
+        super.dibujarTableroDOM();
 
+        let celda;
+
+        for (let i = 0; i < this.filas; i++) {
+            for (let j = 0; j < this.columnas; j++) {
+                celda = document.getElementById(`f${i}_c${j}`);
+            }
+        }
+        console.log(this.arrayTablero);
+    }
+    
     crearTableroJuego() {
         this.tablero = new Tablero(this.filas, this.columnas);
     }
