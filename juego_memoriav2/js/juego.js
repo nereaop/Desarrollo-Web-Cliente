@@ -35,6 +35,7 @@ class Tablero {
         for (let i = 0; i < this.filas; i++) {
             fila = document.createElement('tr');
             tabla.appendChild(fila);
+            fila.style.backgroundColor = "white";
 
             for (let j = 0; j < this.columnas; j++) {
                 columna = document.createElement('td');
@@ -42,14 +43,15 @@ class Tablero {
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
                 columna.dataset.despejado = false;
+                columna.style.backgroundColor = "white";
                 fila.appendChild(columna);
             }
         }
 
         document.body.appendChild(tabla);
-        
+
     }
-  
+
 
     colocarEmojis() {
 
@@ -94,11 +96,11 @@ class Memorin {
     }
 
     comprobacionCasillas() {
-        
+
         if (this.casillas % 2 == 0) {
             this.crearTableroJuego();
         }
-        
+
         if (this.casillas % 2 != 0) {
             let par = false;
             while (par == false) {
@@ -121,11 +123,16 @@ class Memorin {
         for (let i = 0; i < this.filas; i++) {
             for (let j = 0; j < this.columnas; j++) {
                 celda = document.getElementById(`f${i}_c${j}`);
+                celda.addEventListener("contextmenu", this.despejar.bind(this));
             }
         }
         console.log(this.arrayTablero);
     }
-    
+
+    despejar(){
+
+    };
+
     crearTableroJuego() {
         this.tablero = new Tablero(this.filas, this.columnas);
     }
