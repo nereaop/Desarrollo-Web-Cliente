@@ -8,8 +8,8 @@ class Tablero {
 
         this.crearTablero();
         this.colocarEmojis();
-        this.dibujarTableroDOM();
     }
+    
     crearTablero() {
 
         this.arrayTablero = [];
@@ -115,23 +115,35 @@ class Memorin {
 
         }
     }
+
     dibujarTableroDOM() {
         super.dibujarTableroDOM();
-
+        let valorCelda = this.arrayTablero[fila][columna];
         let celda;
 
         for (let i = 0; i < this.filas; i++) {
             for (let j = 0; j < this.columnas; j++) {
                 celda = document.getElementById(`f${i}_c${j}`);
-                celda.addEventListener("contextmenu", this.despejar.bind(this));
+                celda.addEventListener('contextmenu', this.despejar.bind(this));
             }
         }
-        console.log(this.arrayTablero);
+        console.log(valorCelda);
     }
 
-    despejar(){
+    despejar(elEvento) {
+        let evento = elEvento || window.event;
+        let celda = evento.currentTarget;
 
-    };
+        this.despejarCelda(celda);
+    }
+
+    despejarCelda(celda) {
+    
+        celda.removeEventListener('contextmenu', this.despejar.bind(this));
+        alert("DESPEJAO");
+        celda.style.backgroundColor = "pink";
+    
+    }
 
     crearTableroJuego() {
         this.tablero = new Tablero(this.filas, this.columnas);
@@ -139,5 +151,7 @@ class Memorin {
 
 
 }
-
-let memorin = new Memorin();
+window.onload = function () {
+    let memorin = new Memorin();
+    memorin.dibujarTableroDOM();
+}
