@@ -8,8 +8,9 @@ class Tablero {
 
         this.crearTablero();
         this.colocarEmojis();
+        this.dibujarTableroDOM();
     }
-    
+
     crearTablero() {
 
         this.arrayTablero = [];
@@ -24,32 +25,26 @@ class Tablero {
     }
 
     dibujarTableroDOM() {
-        document.write('<h2>MEMORIN</h2>')
-        document.write('<h3>Nerea Oliva Prieto</h3>')
-        document.write('<table>');
-
         let tabla = document.createElement('table');
         let fila;
         let columna;
 
         for (let i = 0; i < this.filas; i++) {
             fila = document.createElement('tr');
+            fila.style.backgroundColor = "#8affdc";
             tabla.appendChild(fila);
-            fila.style.backgroundColor = "white";
 
             for (let j = 0; j < this.columnas; j++) {
                 columna = document.createElement('td');
                 columna.id = `f${i}_c${j}`;
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
-                columna.dataset.despejado = false;
-                columna.style.backgroundColor = "white";
+                columna.style.backgroundColor = "#8affdc";
                 fila.appendChild(columna);
             }
         }
 
         document.body.appendChild(tabla);
-
     }
 
 
@@ -89,6 +84,7 @@ class Memorin {
         this.preguntaUsuario();
         this.casillas = this.filas * this.columnas;
         this.comprobacionCasillas();
+        this.añadirListeners();
     }
     preguntaUsuario() {
         this.filas = prompt('¿Cuantas filas quieres?');
@@ -116,33 +112,29 @@ class Memorin {
         }
     }
 
-    dibujarTableroDOM() {
-        super.dibujarTableroDOM();
-        let valorCelda = this.arrayTablero[fila][columna];
+    añadirListeners() {
         let celda;
-
         for (let i = 0; i < this.filas; i++) {
             for (let j = 0; j < this.columnas; j++) {
                 celda = document.getElementById(`f${i}_c${j}`);
                 celda.addEventListener('contextmenu', this.despejar.bind(this));
             }
         }
-        console.log(valorCelda);
     }
-
-    despejar(elEvento) {
-        let evento = elEvento || window.event;
-        let celda = evento.currentTarget;
+    despejar(eventos) {
+        let evento = eventos || window.event;
+        let celda = eventos.currentTarget;
 
         this.despejarCelda(celda);
     }
-
     despejarCelda(celda) {
-    
-        celda.removeEventListener('contextmenu', this.despejar.bind(this));
+        let fila = celda.dataset.fila;
+        let columna = celda.dataset.columna;
         alert("DESPEJAO");
-        celda.style.backgroundColor = "pink";
-    
+        //celda.removeEventListener('contextmenu', this.despejarCelda.bind(this));
+        celda.style.backgroundColor = "white";
+        celda.innerHTML = this.arrayTablero[fila][columna];
+
     }
 
     crearTableroJuego() {
@@ -153,5 +145,4 @@ class Memorin {
 }
 window.onload = function () {
     let memorin = new Memorin();
-    memorin.dibujarTableroDOM();
 }
