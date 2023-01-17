@@ -22,6 +22,7 @@ class Tablero {
                 this.arrayTablero[fila][columna] = '';
             }
         }
+        console.log(this.arrayTablero);
     }
 
     dibujarTableroDOM() {
@@ -40,6 +41,7 @@ class Tablero {
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
                 columna.style.backgroundColor = "#8affdc";
+                columna.innerHTML = "<p>✺</p>";
                 fila.appendChild(columna);
             }
         }
@@ -127,18 +129,29 @@ class Memorin {
         this.despejarCelda(celda);
     }
     despejarCelda(celda) {
-        
+        let simboloCarta = "<p>✺</p>";
         let fila = parseInt(celda.dataset.fila);
         let columna = parseInt(celda.dataset.columna);
+        let contador = 0;
         celda.removeEventListener('contextmenu', this.despejarCelda.bind(this));
         celda.style.backgroundColor = "white";
         celda.innerHTML = this.tablero.arrayTablero[fila][columna];
+        let valorCelda = this.tablero.arrayTablero[fila][columna];
+        celda.oncontextmenu= function(){
+            contador++;
+        }
+        console.log("Contador: " ,contador);
+
+        
+
         setTimeout(function(){
             celda.style.backgroundColor = "#8affdc";
         }, 3000);
         setTimeout(function(){
-            celda.innerHTML = ""
+            celda.innerHTML = simboloCarta;
         ;},3000);
+
+       
     }
 
 
