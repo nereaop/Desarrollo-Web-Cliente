@@ -8,7 +8,7 @@ class Tablero {
 
         this.crearTablero();
         this.colocarEmojis();
-        this.comprobacionCasillas();
+
     }
 
     crearTablero() {
@@ -49,27 +49,6 @@ class Tablero {
         document.body.appendChild(tabla);
     }
 
-    comprobacionCasillas() {
-
-        if (this.casillas % 2 == 0) {
-            this.dibujarTableroDOM();
-        }
-
-        if (this.casillas % 2 != 0) {
-            let par = false;
-            while (par == false) {
-                window.alert("Ha ocurrido un error, has introducido numeros los cuales las casillas son impar. Por favor, introduce filas y columnas cuyas casillas sean par");
-                this.preguntaUsuario();
-                this.casillas = 0;
-                if (this.casillas % 2 == 0) {
-                    this.dibujarTableroDOM();
-                    par = true;
-                }
-            }
-
-        }
-    }
-
     colocarEmojis() {
 
         let posArray = 0;
@@ -106,11 +85,38 @@ class Memorin {
         this.preguntaUsuario();
         this.casillas = this.filas * this.columnas;
         this.tablero = new Tablero(this.filas, this.columnas);
+        this.comprobacionCasillas();
         this.añadirListeners();
     }
     preguntaUsuario() {
         this.filas = prompt('¿Cuantas filas quieres?');
         this.columnas = prompt('¿Cuantas columnas quieres?');
+    }
+
+    crearTableroJuego() {
+        this.tablero = new Tablero(this.filas, this.columnas);
+    }
+
+
+    comprobacionCasillas() {
+
+        if (this.casillas % 2 != 0) {
+            let par = false;
+            while (par == false) {
+                window.alert("Ha ocurrido un error, has introducido numeros los cuales las casillas son impar. Por favor, introduce filas y columnas cuyas casillas sean par");
+                this.preguntaUsuario();
+                this.casillas = 0;
+                if (this.casillas % 2 == 0) {
+                    this.crearTableroJuego();
+                    par = true;
+                }
+            }
+
+        }
+        
+        if (this.casillas % 2 == 0) {
+            this.crearTableroJuego();
+        }   
     }
 
     añadirListeners() {
@@ -130,30 +136,50 @@ class Memorin {
     }
     despejarCelda(celda) {
         let simboloCarta = "<p>✺</p>";
+        let carta1;
+        let carta2;
         let fila = parseInt(celda.dataset.fila);
         let columna = parseInt(celda.dataset.columna);
-        let contador = 0;
-        celda.removeEventListener('contextmenu', this.despejarCelda.bind(this));
-        celda.style.backgroundColor = "white";
-        celda.innerHTML = this.tablero.arrayTablero[fila][columna];
         let valorCelda = this.tablero.arrayTablero[fila][columna];
-        celda.oncontextmenu= function(){
+
+        let contador = 1;
+        celda.removeEventListener('contextmenu', this.despejarCelda.bind(this));
+        celda.oncontextmenu = function () {
             contador++;
         }
-        console.log("Contador: " ,contador);
+        console.log(contador);
 
-        
+        if (contador == 1) {
+            celda.style.backgroundColor = "white";
+            carta1 = valorCelda;
+            celda.innerHTML = carta1;
+            console.log(carta1);
+        } else if (contador == 2) {
+            carta2 = valorCelda;
+            celda.innerHTML = carta2;
+            celda.style.backgroundColor = "white";
+            console.log(carta2);
+        } else if (carta1 == carta2) {
+            celda.style.backgroundColor = "green";
+            celda.innerHTML = carta2;
+        } else if (carta1 != carta2) {
+            setTimeout(function () {
+                celda.style.backgroundColor = "#8affdc";
+            }, 3000);
+            setTimeout(function () {
+                celda.innerHTML = simboloCarta;
+                ;
+            }, 3000);
+        }
 
-        setTimeout(function(){
-            celda.style.backgroundColor = "#8affdc";
-        }, 3000);
-        setTimeout(function(){
-            celda.innerHTML = simboloCarta;
-        ;},3000);
 
-       
 
-        
+
+
+
+
+
+
     }
 
 
