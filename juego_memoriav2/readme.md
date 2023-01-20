@@ -1,8 +1,12 @@
 Juego de memoria.
 Nerea Oliva Prieto.
 
-El siguiente juego te pide crear un tablero, pero si pones numeros los cuales las casillas sean impar, te saltara un error y tendras que volver a introducir filas y columnas que quieras.
+En este proyecto haremos un juego de memoria. Siempre habrán 2 parejas con lo que el tablero debe ser par, si es impar dará error.
+La puntuación es:
+- 10 puntos si el usuario acierta la pareja a la primera.
+- 5 puntos si el usuario acierta la pareja a la segunda.
+- 2.5 puntos si el usuario acierta la pareja a la tercera.
+- 0 puntos si es usuario acierta la pareja más allá de tres veces
+Para girar las cartas es con click derecho.
 
-No hay maximo ni de filas ni de columnas,
-
-Una vez introducidas las filas y columnas mostrara en la pagina web el tablero con unos emoticonos.
+No hay maximo ni de filas ni de columnas
