@@ -74,9 +74,25 @@ class Tablero {
             }
         }
 
+        let reiniciar = document.createElement('button');
+        reiniciar.type = "button";
+        reiniciar.innerText = "Reiniciar";
+        reiniciar.className = "bn5";
+        reiniciar.style.marginLeft = "2%";
+        reiniciar.style.fontSize = "20px";
+        reiniciar.addEventListener('click', this.reiniciar.bind(this));
+        reiniciar.style.marginBottom = "1%";
+        document.body.appendChild(reiniciar);
+        
         document.body.appendChild(tabla);
     }
 
+    reiniciar() {
+        let respuesta = window.confirm("¿Estas seguro que quieres reiniciar el juego?");
+        if (respuesta == true) {
+            window.location.href = window.location.href;
+        }
+    }
     colocarEmojis() {
 
         let posArray = 0;
@@ -111,14 +127,19 @@ class Tablero {
 class Memorin extends Tablero {
     constructor(filas, columnas) {
         super(filas, columnas);
-        // this.tablero = new Tablero(this.filas, this.columnas);
         this.carta1 = "";
         this.carta2 = "";
         this.carta1Pos = "";
-        this.contador = 0;
-
+        this.cartaSeleccionadas = 0;
+        this.intentos = 0;
+        this.puntos = 0;
+        this.puntuacionMaxima = (this.casillas / 2) * 10;
+        this.maximasParejasCorrectas = this.casillas / 2;
+        this.aciertos = 0;
         this.añadirListeners();
     }
+
+
 
     añadirListeners() {
         let celda;
@@ -129,6 +150,7 @@ class Memorin extends Tablero {
                 celda.addEventListener('contextmenu', this.despejar.bind(this));
             }
         }
+
     }
 
     despejar(eventos) {
@@ -138,42 +160,93 @@ class Memorin extends Tablero {
         this.despejarCelda(celda);
     }
 
+
     despejarCelda(celda) {
-        this.contador++;
+        window.oncontextmenu = (() => {
+            return false;
+        });
+        this.cartaSeleccionadas++;
         let simboloCarta = "<p>✺</p>";
         let fila = parseInt(celda.dataset.fila);
         let columna = parseInt(celda.dataset.columna);
         let valorCelda = this.arrayTablero[fila][columna];
 
-        if (this.contador == 1) {
+        if (this.cartaSeleccionadas == 1) {
+
             celda.style.background = "white";
             this.carta1 = valorCelda;
             this.carta1Pos = celda;
             celda.innerHTML = this.carta1;
-        } else if (this.contador == 2) {
+
+        } else if (this.cartaSeleccionadas == 2) {
+
+            this.intentos++;
             this.carta2 = valorCelda;
             celda.innerHTML = this.carta2;
             celda.style.background = "white";
-            this.contador = 0;
+            this.cartaSeleccionadas = 0;
+
             if (this.carta1 == this.carta2) {
+
+                this.aciertos++;
                 celda.style.background = "green";
                 this.carta1Pos.style.background = "green";
                 celda.innerHTML = this.carta2;
-                celda.removeEventListener('contextmenu', this.despejarCelda.bind(this));
-                this.carta1Pos.removeEventListener('contextmenu', this.despejarCelda.bind(this));
+                celda.style.pointerEvents = "none";
+                this.carta1Pos.style.pointerEvents = "none";
+
+                if (this.intentos == 1) {
+                    this.puntos = this.puntos + 10;
+                    this.intentos = 0;
+                } else if (this.intentos == 2) {
+                    this.puntos = this.puntos + 5;
+                    this.intentos = 0;
+                } else if (this.intentos == 3) {
+                    this.puntos = this.puntos + 2.5;
+                    this.intentos = 0;
+                } else if (this.intentos > 3) {
+                    this.puntos = this.puntos + 0;
+                    this.intentos = 0;
+                }
+                this.ganar();
+
             } else if (this.carta1 != this.carta2) {
+
                 setTimeout(() => {
                     celda.style.background = "#8affdc";
                     celda.innerHTML = simboloCarta;
                     this.carta1Pos.style.background = "#8affdc";
                     this.carta1Pos.innerHTML = simboloCarta;
-                }, 2000);
+                }, 1000);
             }
         }
     }
 
+    ganar() {
+        if (this.aciertos == this.maximasParejasCorrectas) {
+
+            let texto = document.createElement('h1');
+            texto.innerText = "ENHORABUENA HAS GANADO :D";
+            texto.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+            texto.style.textAlign = "center";
+            texto.style.marginLeft = "30%";
+            texto.style.background = "rgba(50, 197, 255, 0.817)";
+            texto.style.width = "40%";
+            document.body.appendChild(texto);
+
+            let texto2 = document.createElement('h1');
+            texto2.innerText = `Tu puntuacion ha sido: ${this.puntos}/${this.puntuacionMaxima}`;
+            texto2.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+            texto2.style.textAlign = "center";
+            texto2.style.marginLeft = "30%";
+            texto2.style.background = "rgba(50, 197, 255, 0.817)";
+            texto2.style.width = "40%";
+            document.body.appendChild(texto2);
+        }
+    }
 
 }
 window.onload = function () {
     let memorin = new Memorin();
+
 }
